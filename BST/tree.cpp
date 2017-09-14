@@ -69,7 +69,6 @@ node * maiorValor(node *n){
 
 node* remove(node* r, int key){
     if (r == NULL){
-        printf("Empty Tree");
         return r;
         
     }else{
@@ -91,9 +90,23 @@ node* remove(node* r, int key){
                 free(r);
                 return aux;
             }
-            //com dois filhos
-            node *aux = menorValor(r->right);
-            r->key = aux->key;
+            
+	    //com dois filhos
+
+	    //busca o mais a esquerda da subarvore direita e seu pai
+	    node *aux = r;
+            node *aux2 = r->right;
+
+	    while(aux2->left != NULL){
+		aux = aux2;
+		aux2 = aux2->left;
+	    }
+
+	    if(aux!=r){
+		aux->left = aux2->right;
+		aux2->right = r->right;
+	    }
+            aux2->left = r->left;
             r->right = remove(r->right, aux->key);
             
         }
@@ -129,12 +142,12 @@ void inorder(node *r){
 int main(){
 	node *root = NULL;
 
-	root = insert(root, 2);
+	root = insert(root, 5);
 	root = insert(root, 1);
-	root = insert(root, 3);
 	root = insert(root, 4);
+	root = insert(root, 10);
 
-    printf("Inorder:\n");
+    	printf("Inorder:\n");
 	inorder(root);
 	printf("\nPostorder:\n");
 	postorder(root);
@@ -154,10 +167,9 @@ int main(){
 	printf("\nRemove 1:\n");
 	inorder(root);
 	
-	printf("\nRemove all:\n");
-	root = remove(root, 2);
-	root = remove(root, 3);
-    root = remove(root, 2);
+	printf("\nRemove 5:\n");
+	root = remove(root, 5);
+	inorder(root);
 
 	return 0;
 }

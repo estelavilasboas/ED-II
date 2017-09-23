@@ -79,13 +79,7 @@ node* remove(node* r, int key){
             r->right = remove(r->right, key);
             
         }else{
-            //com um ou nenhum filho
-            if(r->left == NULL){
-                node *aux = r->right;
-                free(r);
-                return aux;
-                
-            }else if(r->right == NULL){
+	    if(r->right == NULL){
                 node *aux = r->left;
                 free(r);
                 return aux;
@@ -107,7 +101,10 @@ node* remove(node* r, int key){
 		aux2->right = r->right;
 	    }
             aux2->left = r->left;
-            r->right = remove(r->right, aux->key);
+            
+	    
+		free(r);
+		return aux2;
             
         }
         return r;
@@ -158,6 +155,10 @@ int main(){
 	printf("\nMaior Valor: %d", n->key);
 	n = menorValor(root);
 	printf("\nMenor Valor: %d\n", n->key);
+
+	printf("\nRemove 5:\n");
+	root = remove(root, 5);
+	inorder(root);
 	
 	root = remove(root, 4);
 	printf("\nRemove 4:\n");
@@ -167,8 +168,8 @@ int main(){
 	printf("\nRemove 1:\n");
 	inorder(root);
 	
-	printf("\nRemove 5:\n");
-	root = remove(root, 5);
+	printf("\nRemove 10:\n");
+	root = remove(root, 10);
 	inorder(root);
 
 	return 0;
